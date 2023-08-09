@@ -11,13 +11,15 @@ const listContacts = async () => {
 
 const getContactById = async (contactId) => {
   const contacts = await listContacts();
-  return contacts.find((item) => item.id === contactId);
+  const result = contacts.find((item) => item.id === contactId);
+  return result || null;
 };
 
 const removeContact = async (contactId) => {
   const contacts = await listContacts();
   const updatedContacts = contacts.filter((item) => item.id !== contactId);
   await fs.writeFile(contactsPath, JSON.stringify(updatedContacts, null, 2));
+  return updatedContacts;
 };
 
 const addContact = async (body) => {
