@@ -28,7 +28,14 @@ const addContact = async (body) => {
   return newContact;
 };
 
-const updateContact = async (contactId, body) => { }
+const updateContact = async (contactId, body) => {
+  const contacts = await listContacts();
+  const updatedContacts = contacts.map((item) =>
+    item.id === contactId ? { ...item, ...body } : item
+  );
+  await fs.writeFile(contactsPath, JSON.stringify(updatedContacts, null, 2));
+  return updatedContacts.find((item) => item.id === contactId);
+};
 
 module.exports = {
   listContacts,
