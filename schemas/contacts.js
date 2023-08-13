@@ -12,7 +12,7 @@ const contactSchema = Joi.object({
   }),
   phone: Joi.string()
     .required()
-    .pattern(/^[0-9]+$/)
+    .pattern(/^[\d() -]+$/)
     .messages({
       'string.empty': 'phone field is required',
       'any.required': 'missing required phone field',
