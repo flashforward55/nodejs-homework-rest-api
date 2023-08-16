@@ -30,7 +30,7 @@ const contactSchema = new Schema(
   { versionKey: false }
 );
 
-contactSchema.post('save', handleSchemaValidationErrors);
+contactSchema.post("save", handleSchemaValidationErrors)
 
 const joySchema = Joi.object({
   name: Joi.string().required().messages({
