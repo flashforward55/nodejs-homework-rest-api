@@ -32,7 +32,7 @@ const contactSchema = new Schema(
 
 contactSchema.post("save", handleSchemaValidationErrors)
 
-const joySchema = Joi.object({
+const joyAddSchema = Joi.object({
   name: Joi.string().required().messages({
     'string.empty': 'name field is required',
     'any.required': 'missing required name field',
@@ -49,12 +49,12 @@ const joySchema = Joi.object({
   }),
   favorite: Joi.boolean().default(false),
 });
-const updateFavoriteSchema = Joi.object({
+const joyUpdateFavoriteSchema = Joi.object({
   favorite: Joi.boolean().required().messages({
-    'any.required': 'missing required favorite field"',
+    'any.required': 'missing required favorite field',
   }),
 });
 
 const Contact = model('contact', contactSchema);
 
-module.exports = { Contact, joySchema, updateFavoriteSchema };
+module.exports = { Contact, joyAddSchema, joyUpdateFavoriteSchema };
