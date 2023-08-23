@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 const Joi = require('joi');
 
-const { handleSchemaValidationErrors } = require('../middlewares');
+const { handleSchemaValidationErrors } = require('../helpers');
 
 /* const emailRegexp = /^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/; */
 const emailRegexp = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
@@ -28,7 +28,12 @@ const userSchema = new Schema(
     { versionKey: false }
 );
 
+/* userSchema.post('save', handleSchemaValidationErrors); */
+
+
 userSchema.post('save', handleSchemaValidationErrors);
+
+
 
 const registerSchema = Joi.object({
     name: Joi.string().required(),

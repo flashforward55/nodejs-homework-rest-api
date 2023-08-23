@@ -1,21 +1,28 @@
 const bcrypt = require("bcrypt");
 
 const { User } = require('../../models/user');
+
+const { HttpError } = require("../../helpers");
+
 const register = async (req, res) => {
     const { email, password } = req.body;
-    const user = await User.findOne({ email });
 
-    if (user) {
-        /* throw HttpError(409, "Email already in use"); */
-        res.status(409).json({ message: 'Email in use' });
-    }
-    const hashPassword = await bcrypt.hash(password, 10);
+    const existingUser = await User.findOne({ email });
 
-    const newUser = await User.create({ ...req.body, password: hashPassword });
+    if (existingUser) throw HttpError(409, 'Email in use');
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = await User.create({
+        ...req.body,
+        password: hashedPassword,
+    });
 
     res.status(201).json({
-        email: newUser.email,
-        name: newUser.name,
+        user: {
+            email: newUser.email,
+            /* subscription: newUser.subscription, */
+        },
     });
 };
 

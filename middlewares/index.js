@@ -1,11 +1,9 @@
 const validation = require('./validation');
-const ctrlWrapper = require('./ctrlWrapper');
-const handleSchemaValidationErrors = require('./handleSchemaValidationErrors');
+const authenticate = require('./authenticate');
 const isValidId = require('./isValidId')
 
 module.exports = {
     validation,
-    ctrlWrapper,
-    handleSchemaValidationErrors,
+    authenticate,
     isValidId
 };
