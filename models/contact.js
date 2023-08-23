@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 const Joi = require('joi');
-const { handleSchemaValidationErrors } = require('../middlewares');
+const { handleSchemaValidationErrors } = require('../helpers');
 
 const isPhoneRegexp = /^[\d() -]+$/;
 
