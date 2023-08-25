@@ -1,15 +1,34 @@
 const express = require('express');
+const ctrl = require('../../controllers/users');
+const mdw = require('../../middlewares');
+const { joiUsersSchemas } = require('../../schemas');
 
-const { users: ctrl } = require('../../controllers');
+const usersRouter = express.Router();
 
-const router = express.Router();
+usersRouter.post(
+    '/register',
+    mdw.validateEmptyBody,
+    mdw.validateBody(joiUsersSchemas.register),
+    ctrl.register
+);
 
-const { validation } = require('../../middlewares');
-const { ctrlWrapper } = require('../../helpers')
-const { registerSchema, loginSchema } = require('../../models/user');
+usersRouter.post(
+    '/login',
+    mdw.validateEmptyBody,
+    mdw.validateBody(joiUsersSchemas.login),
+    ctrl.login
+);
 
-router.post('/register', validation(registerSchema), ctrlWrapper(ctrl.register));
+usersRouter.post('/logout', mdw.authenticate, ctrl.logout);
 
-router.post('/login', validation(loginSchema), ctrl.login);
+usersRouter.get('/current', mdw.authenticate, ctrl.current);
 
-module.exports = router;
+usersRouter.patch(
+    '/',
+    mdw.authenticate,
+    mdw.validateEmptyBodySub,
+    mdw.validateBody(joiUsersSchemas.updateSubscription),
+    ctrl.updateSubscription
+);
+
+module.exports = usersRouter;
