@@ -1,5 +1,6 @@
 const Joi = require('joi');
 const subscriptionList = ['starter', 'pro', 'business'];
+const gravatar = require('gravatar');
 
 const emailRegexp = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
 
@@ -58,6 +59,7 @@ const schema = {
   avatarURL: {
     type: String,
     required: true,
+    default: gravatar.url(this.email),
   },
   token: { type: String, default: null },
 };
