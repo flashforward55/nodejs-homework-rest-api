@@ -1,11 +1,16 @@
-const validation = require('./validation');
-const ctrlWrapper = require('./ctrlWrapper');
-const handleSchemaValidationErrors = require('./handleSchemaValidationErrors');
-const isValidId = require('./isValidId')
+const isValidId = require('./isValidId');
+const validateBody = require('./validateBody');
+const validateEmptyBody = require('./validateEmptyBody');
+const authenticate = require('./authenticate');
+const checkDuplicateContact = require('./checkDuplicateContact');
+const validateEmptyBodySub = require('./validateEmptyBodySub')
 
 module.exports = {
-    validation,
-    ctrlWrapper,
-    handleSchemaValidationErrors,
-    isValidId
+    isValidId,
+    validateBody,
+    validateEmptyBody,
+    authenticate,
+    checkDuplicateContact,
+    validateEmptyBodySub
+
 };

@@ -1,14 +1,50 @@
-const express = require('express');
-const router = express.Router();
-const { contacts: ctrl } = require('../../controllers');
-const { validation, ctrlWrapper, isValidId } = require('../../middlewares');
-const { joyAddSchema, joyUpdateFavoriteSchema } = require('../../models/contact');
+const express = require("express");
+const ctrl = require("../../controllers/contacts");
+const mdw = require("../../middlewares");
+const { joiContactsSchemas } = require("../../schemas");
 
-router.get('/', ctrlWrapper(ctrl.getAll));
-router.get('/:contactId', isValidId, ctrlWrapper(ctrl.getById));
-router.post('/', validation(joyAddSchema), ctrlWrapper(ctrl.add));
-router.put('/:contactId', isValidId, validation(joyAddSchema), ctrlWrapper(ctrl.updateById));
-router.patch("/:contactId/favorite", isValidId, validation(joyUpdateFavoriteSchema), ctrlWrapper(ctrl.updateFavorite));
-router.delete('/:contactId', isValidId, ctrlWrapper(ctrl.removeById));
+const contactsRouter = express.Router();
 
-module.exports = router;
+contactsRouter.get("/", mdw.authenticate, ctrl.getAllContacts);
+
+contactsRouter.get(
+    "/:contactId",
+    mdw.authenticate,
+    mdw.isValidId,
+    ctrl.getContactById
+);
+
+contactsRouter.post(
+    "/",
+    mdw.authenticate,
+    mdw.validateBody(joiContactsSchemas.add),
+    mdw.checkDuplicateContact,
+    ctrl.addContact
+);
+
+contactsRouter.delete(
+    "/:contactId",
+    mdw.authenticate,
+    mdw.isValidId,
+    ctrl.deleteContactById
+);
+
+contactsRouter.put(
+    "/:contactId",
+    mdw.authenticate,
+    mdw.isValidId,
+    mdw.validateEmptyBody,
+    mdw.validateBody(joiContactsSchemas.update),
+    ctrl.updateContactById
+);
+
+contactsRouter.patch(
+    "/:contactId/favorite",
+    mdw.authenticate,
+    mdw.isValidId,
+    mdw.validateEmptyBody,
+    mdw.validateBody(joiContactsSchemas.updateStatus),
+    ctrl.updateContactStatusById
+);
+
+module.exports = contactsRouter;
