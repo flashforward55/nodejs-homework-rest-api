@@ -1,20 +1,36 @@
 const path = require('path');
 const fs = require('fs/promises');
 const { User } = require('../../models');
-const avatarsDir = path.join(__dirname, '../', '../', 'public', 'avatars');
 
-const updateAvatar = async (req, res) => {
-  const { _id } = req.user;
-  const { path: tempUpload, originalname } = req.file;
-  const filename = `${_id}_${originalname}`;
-  const resultUpload = path.join(avatarsDir, filename);
-  await fs.rename(tempUpload, resultUpload);
-  const avatarURL = path.join('avatars', filename);
-  await User.findByIdAndUpdate(_id, { avatarURL });
+const avatarsDirPath = path.join(__dirname, '..', '..', 'public', 'avatars');
 
-  res.json({
-    avatarURL,
-  });
+const updateAvatar = async (req, res, next) => {
+  const { _id, avatarURL: oldAvatarURL } = req.user;
+  const { path: tempFilePath, originalname } = req.file;
+  const fileName = `${_id}_${originalname}`;
+  const resultFilePath = path.join(avatarsDirPath, fileName);
+  await fs.rename(tempFilePath, resultFilePath);
+  const newAvatarURL = path.join('avatars', fileName);
+
+  const updatedUser = await User.findByIdAndUpdate(
+    _id,
+    { avatarURL: newAvatarURL },
+    {
+      new: true,
+    }
+  );
+
+  const oldAvatarPath = path.join(process.cwd(), 'public', oldAvatarURL);
+
+  try {
+    await fs.access(oldAvatarPath);
+
+    if (oldAvatarPath !== resultFilePath) await fs.unlink(oldAvatarPath);
+  } catch {
+    console.log('--- old avatar image not found ---');
+  }
+
+  res.json({ avatarURL: updatedUser.avatarURL });
 };
 
 module.exports = updateAvatar;

@@ -4,7 +4,8 @@ const validateEmptyBody = require('./validateEmptyBody');
 const authenticate = require('./authenticate');
 const checkDuplicateContact = require('./checkDuplicateContact');
 const validateEmptyBodySub = require('./validateEmptyBodySub');
-const upload = require('./uploadAvatar');
+const uploadAvatar = require('./uploadAvatar');
+const modifyAvatar = require('./modifyAvatar');
 
 module.exports = {
   isValidId,
@@ -13,5 +14,6 @@ module.exports = {
   authenticate,
   checkDuplicateContact,
   validateEmptyBodySub,
-  upload,
+  uploadAvatar,
+  modifyAvatar,
 };
