@@ -8,10 +8,17 @@ const { DB_HOST } = process.env;
 
 describe('test auth route', () => {
   let server;
-  beforeAll(() => (server = app.listen(3000)));
-  afterAll(() => server.close());
-  beforeEach(done => {
-    mongoose.connect(DB_HOST).then(() => done());
+
+  beforeAll(() => {
+    server = app.listen(3000);
+  });
+
+  afterAll(() => {
+    server.close();
+  });
+
+  beforeEach(async () => {
+    await mongoose.connect(DB_HOST);
   });
 
   test('test signup', async () => {
@@ -25,13 +32,13 @@ describe('test auth route', () => {
     const { token, user } = response.body;
 
     expect(response.statusCode).toBe(200);
-    expect(token).not.toBe('');
+    expect(token).toBeTruthy();
     expect(Object.keys(user)).toEqual(['email', 'subscription']);
-    expect(typeof user.email === 'string').toEqual(true);
-    expect(typeof user.subscription === 'string').toEqual(true);
+    expect(typeof user.email).toBe('string');
+    expect(typeof user.subscription).toBe('string');
 
     console.info('Token:', token);
-    console.info('email:', user.email);
-    console.info('subscription:', user.subscription);
+    console.info('Email:', user.email);
+    console.info('Subscription:', user.subscription);
   });
 });
