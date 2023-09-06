@@ -2,7 +2,7 @@ const express = require('express');
 const ctrl = require('../../controllers/users');
 const mdw = require('../../middlewares');
 const { joiUsersSchemas } = require('../../schemas');
-
+const upload = require('../../servise/upload');
 const usersRouter = express.Router();
 
 usersRouter.post('/register', mdw.validateBody(joiUsersSchemas.register), ctrl.register);
@@ -20,13 +20,15 @@ usersRouter.patch(
   mdw.validateBody(joiUsersSchemas.updateSubscription),
   ctrl.updateSubscription
 );
-
+/* 
 usersRouter.patch(
   '/avatars',
   mdw.authenticate,
   mdw.uploadAvatar.single('avatar'),
   mdw.modifyAvatar,
   ctrl.updateAvatar
-);
+); */
+
+usersRouter.patch('/avatars', mdw.authenticate, upload.single('avatar'), ctrl.avatars);
 
 module.exports = usersRouter;
