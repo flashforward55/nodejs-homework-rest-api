@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs').promises;
-const updateAvatar = require('../../servise/updateAvatar');
-const convertingAvatars = require('../../servise/convertingAvatars');
+const updateAvatar = require('../../service/updateAvatar');
+const convertingAvatars = require('../../service/convertingAvatars');
 
 const avatars = async (req, res) => {
   const { path: tmpDir, originalname } = req.file;
