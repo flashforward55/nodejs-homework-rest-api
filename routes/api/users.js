@@ -20,14 +20,6 @@ usersRouter.patch(
   mdw.validateBody(joiUsersSchemas.updateSubscription),
   ctrl.updateSubscription
 );
-/* 
-usersRouter.patch(
-  '/avatars',
-  mdw.authenticate,
-  mdw.uploadAvatar.single('avatar'),
-  mdw.modifyAvatar,
-  ctrl.updateAvatar
-); */
 
 usersRouter.patch('/avatars', mdw.authenticate, upload.single('avatar'), ctrl.avatars);
 

@@ -1,9 +1,8 @@
-const updateAvatar = require('../../servise/updateAvatar');
 const path = require('path');
-const convertingAvatars = require('../../servise/convertingAvatars');
 const fs = require('fs').promises;
+const updateAvatar = require('../../servise/updateAvatar');
+const convertingAvatars = require('../../servise/convertingAvatars');
 
-//AVATARS
 const avatars = async (req, res) => {
   const { path: tmpDir, originalname } = req.file;
   const { id } = req.user;
