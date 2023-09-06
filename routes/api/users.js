@@ -2,7 +2,7 @@ const express = require('express');
 const ctrl = require('../../controllers/users');
 const mdw = require('../../middlewares');
 const { joiUsersSchemas } = require('../../schemas');
-const upload = require('../../service/upload');
+const { upload } = require('../../service');
 const usersRouter = express.Router();
 
 usersRouter.post('/register', mdw.validateBody(joiUsersSchemas.register), ctrl.register);
