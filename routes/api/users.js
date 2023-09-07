@@ -7,6 +7,15 @@ const usersRouter = express.Router();
 
 usersRouter.post('/register', mdw.validateBody(joiUsersSchemas.register), ctrl.register);
 
+usersRouter.get('/verify/:verificationToken', ctrl.verifyEmail);
+
+usersRouter.post(
+  '/verify/',
+  mdw.validateEmptyBodyVerify,
+  mdw.validateBody(joiUsersSchemas.verify),
+  ctrl.resendVerifyEmail
+);
+
 usersRouter.post('/login', mdw.validateBody(joiUsersSchemas.login), ctrl.login);
 
 usersRouter.post('/logout', mdw.authenticate, ctrl.logout);

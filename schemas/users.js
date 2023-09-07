@@ -18,6 +18,13 @@ const register = Joi.object({
   token: Joi.string().default(null),
 });
 
+const verify = Joi.object({
+  email: Joi.string().pattern(emailRegexp).required().messages({
+    'string.pattern.base': 'email must be a valid email',
+    'any.required': 'missing required "email" field',
+  }),
+});
+
 const login = Joi.object({
   password: Joi.string().min(6).required().messages({
     'any.required': 'missing required "password" field',
@@ -38,7 +45,7 @@ const updateSubscription = Joi.object({
     }),
 });
 
-const joiUsersSchemas = { register, login, updateSubscription };
+const joiUsersSchemas = { register, login, updateSubscription, verify };
 
 const schema = {
   email: {
@@ -62,6 +69,14 @@ const schema = {
     default: gravatar.url(this.email),
   },
   token: { type: String, default: null },
+  verify: {
+    type: Boolean,
+    default: false,
+  },
+  verificationToken: {
+    type: String,
+    default: null,
+  },
 };
 
 const settings = {
