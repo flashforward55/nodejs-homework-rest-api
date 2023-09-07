@@ -9,4 +9,12 @@ module.exports = {
     ecmaVersion: 12,
   },
   rules: {},
-}
+  globals: {
+    describe,
+    test,
+    expect,
+    beforeAll,
+    afterAll,
+    beforeEach,
+  },
+};
